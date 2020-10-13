@@ -87,6 +87,8 @@
             <enum name="BUTT" value="1" />
         </attr>
 
+        <attr name="sv_minMaxValuesAddVerticalPadding" format="integer"/>
+
         <attr name="sv_indicator" format="enum" >
             <enum name="NoIndicator" value="0" />
             <enum name="NormalIndicator" value="1" />
@@ -111,6 +113,8 @@
             <enum name="BOTTOM_RIGHT" value="7" />
             <enum name="BOTTOM_LEFT" value="8" />
         </attr>
+
+
 
         <attr name="sv_cutPadding" format="dimension" />
 

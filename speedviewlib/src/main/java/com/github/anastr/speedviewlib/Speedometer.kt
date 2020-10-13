@@ -38,6 +38,8 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
             }
         }
 
+    private var minMaxValuesAddVerticalPadding = 0
+
     /**
      * light effect behind the [indicator].
      */
@@ -330,6 +332,7 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
         if (attrs == null)
             return
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.Speedometer, 0, 0)
+        minMaxValuesAddVerticalPadding = a.getInt(R.styleable.Speedometer_sv_minMaxValuesAddVerticalPadding, 0)
 
         val mode = a.getInt(R.styleable.Speedometer_sv_speedometerMode, -1)
         if (mode != -1 && mode != 0)
@@ -653,8 +656,10 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
             tickStart = "%.0f".format(locale, minSpeed)
         c.save()
         c.rotate(startDegree + 90f, size * .5f, size * .5f)
-        c.rotate(-(startDegree + 90f), sizePa * .5f - textPaint.textSize + padding, textPaint.textSize + padding)
-        c.drawText(tickStart.toString(), sizePa * .5f - textPaint.textSize + padding, textPaint.textSize + padding, textPaint)
+        c.rotate(-(startDegree + 90f), sizePa * .5f - textPaint.textSize + padding,
+                textPaint.textSize + padding)
+        c.drawText(tickStart.toString(), sizePa * .5f - textPaint.textSize + padding,
+                textPaint.textSize + padding + minMaxValuesAddVerticalPadding, textPaint)
         c.restore()
         textPaint.textAlign = when {
             endDegree % 360 <= 90 -> Paint.Align.RIGHT
@@ -670,8 +675,10 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
             tickEnd = "%.0f".format(locale, maxSpeed)
         c.save()
         c.rotate(endDegree + 90f, size * .5f, size * .5f)
-        c.rotate(-(endDegree + 90f), sizePa * .5f + textPaint.textSize + padding.toFloat(), textPaint.textSize + padding)
-        c.drawText(tickEnd.toString(), sizePa * .5f + textPaint.textSize + padding.toFloat(), textPaint.textSize + padding, textPaint)
+        c.rotate(-(endDegree + 90f), sizePa * .5f + textPaint.textSize + padding.toFloat(),
+                textPaint.textSize + padding)
+        c.drawText(tickEnd.toString(), sizePa * .5f + textPaint.textSize + padding.toFloat(),
+                textPaint.textSize + padding + minMaxValuesAddVerticalPadding, textPaint)
         c.restore()
     }
 

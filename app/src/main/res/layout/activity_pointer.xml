@@ -19,6 +19,7 @@
         android:layout_gravity="center_horizontal"
         app:sv_pointerRadiusScale="1"
         app:sv_pointerWithShadow="false"
+        app:sv_minMaxValuesAddVerticalPadding="25"
         app:sv_unitTextSize="15sp"
         app:sv_speedTextTypeface="fonts/good-times.ttf" />
 
