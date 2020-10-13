@@ -39,6 +39,7 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
         }
 
     private var minMaxValuesAddVerticalPadding = 0
+    private var highlightMarksWhenReached = false
 
     /**
      * light effect behind the [indicator].
@@ -333,6 +334,7 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
             return
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.Speedometer, 0, 0)
         minMaxValuesAddVerticalPadding = a.getInt(R.styleable.Speedometer_sv_minMaxValuesAddVerticalPadding, 0)
+        highlightMarksWhenReached = a.getBoolean(R.styleable.Speedometer_highlightMarksWhenReached, false)
 
         val mode = a.getInt(R.styleable.Speedometer_sv_speedometerMode, -1)
         if (mode != -1 && mode != 0)
@@ -446,16 +448,25 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
      * this method must be called in subSpeedometer's [updateBackgroundBitmap] method.
      * @param canvas marks should be drawn on [backgroundBitmap].
      */
-    protected fun drawMarks(canvas: Canvas) {
+    protected fun drawMarks(canvas: Canvas, speedometerColor: Int? = null) {
         markPath.reset()
         markPath.moveTo(size * .5f, marksPadding + padding)
         markPath.lineTo(size * .5f, marksPadding + markHeight + padding)
 
         canvas.save()
         canvas.rotate(90f + getStartDegree(), size * .5f, size * .5f)
-        val everyDegree = (getEndDegree() - getStartDegree()) / (marksNumber + 1f)
+        val defaultMarkColor = markColor
+
         for (i in 1..marksNumber) {
+            val everyDegree = (getEndDegree() - getStartDegree()) / (marksNumber + 1f)
             canvas.rotate(everyDegree, size * .5f, size * .5f)
+
+            if(highlightMarksWhenReached) {
+                val condition = ((getEndDegree() - getStartDegree()) * getOffsetSpeed()) >= (everyDegree * i)
+                if (condition) markPaint.color = speedometerColor!!
+                else markPaint.color = defaultMarkColor
+            }
+
             canvas.drawPath(markPath, markPaint)
         }
         canvas.restore()

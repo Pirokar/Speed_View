@@ -146,6 +146,7 @@ open class PointerSpeedometer @JvmOverloads constructor(context: Context, attrs:
         val roundAngle = getRoundAngle(speedometerWidth, speedometerRect.width())
         canvas.drawArc(speedometerRect, getStartDegree() + roundAngle
                 , (getEndDegree() - getStartDegree()) - roundAngle * 2f, false, speedometerPaint)
+        drawMarks(canvas, speedometerColor)
 
         if (withPointer) {
             canvas.save()

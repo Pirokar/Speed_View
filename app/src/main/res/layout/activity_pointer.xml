@@ -24,12 +24,14 @@
         app:sv_speedometerColor="@android:color/holo_red_dark"
         app:sv_pointerColor="@android:color/holo_red_dark"
         app:sv_markColor="@android:color/darker_gray"
+        app:highlightMarksWhenReached="true"
         app:sv_speedTextPosition="CENTER"
         app:sv_backgroundCircleColor="@android:color/transparent"
         app:sv_centerCircleColor="@android:color/transparent"
         app:sv_indicatorColor="@android:color/transparent"
         app:sv_unitTextSize="15sp"
-        app:sv_speedTextTypeface="fonts/good-times.ttf" />
+        app:sv_speedTextTypeface="fonts/good-times.ttf"
+        app:sv_withTremble="false"/>
 
     <LinearLayout
         android:orientation="horizontal"
