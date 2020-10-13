@@ -88,6 +88,7 @@
         </attr>
 
         <attr name="sv_minMaxValuesAddVerticalPadding" format="integer"/>
+        <attr name="sv_maxValueAddHorizontalPadding" format="integer"/>
 
         <attr name="sv_indicator" format="enum" >
             <enum name="NoIndicator" value="0" />

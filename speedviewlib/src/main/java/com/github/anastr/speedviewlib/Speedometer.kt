@@ -39,6 +39,7 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
         }
 
     private var minMaxValuesAddVerticalPadding = 0
+    private var maxValueAddHorizontalPadding = 0
     private var highlightMarksWhenReached = false
 
     /**
@@ -335,6 +336,7 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.Speedometer, 0, 0)
         minMaxValuesAddVerticalPadding = a.getInt(R.styleable.Speedometer_sv_minMaxValuesAddVerticalPadding, 0)
         highlightMarksWhenReached = a.getBoolean(R.styleable.Speedometer_highlightMarksWhenReached, false)
+        maxValueAddHorizontalPadding = a.getInt(R.styleable.Speedometer_sv_maxValueAddHorizontalPadding, 0)
 
         val mode = a.getInt(R.styleable.Speedometer_sv_speedometerMode, -1)
         if (mode != -1 && mode != 0)
@@ -688,7 +690,8 @@ abstract class Speedometer @JvmOverloads constructor(context: Context, attrs: At
         c.rotate(endDegree + 90f, size * .5f, size * .5f)
         c.rotate(-(endDegree + 90f), sizePa * .5f + textPaint.textSize + padding.toFloat(),
                 textPaint.textSize + padding)
-        c.drawText(tickEnd.toString(), sizePa * .5f + textPaint.textSize + padding.toFloat(),
+        c.drawText(tickEnd.toString(), sizePa * .5f + textPaint.textSize + padding.toFloat()
+                + maxValueAddHorizontalPadding,
                 textPaint.textSize + padding + minMaxValuesAddVerticalPadding, textPaint)
         c.restore()
     }
