@@ -160,6 +160,7 @@
         <attr name="sv_speedometerColor" />
         <attr name="sv_pointerWithShadow" format="boolean"/>
         <attr name="sv_pointerRadiusScale" format="float"/>
+        <attr name="sv_speedometerNotFilledColor" format="color"/>
         <attr name="sv_pointerColor" format="color"/>
         <attr name="sv_withPointer" format="boolean"/>
     </declare-styleable>

@@ -25,6 +25,7 @@ open class PointerSpeedometer @JvmOverloads constructor(context: Context, attrs:
     private var withPointer = true
     private var pointerRadiusScale = 0.5f
     private var pointerWithShadow = true
+    private var speedometerNotFilledColor = -1
 
     /**
      * change the color of the center circle.
@@ -112,6 +113,7 @@ open class PointerSpeedometer @JvmOverloads constructor(context: Context, attrs:
         withPointer = a.getBoolean(R.styleable.PointerSpeedometer_sv_withPointer, withPointer)
         pointerWithShadow = a.getBoolean(R.styleable.PointerSpeedometer_sv_pointerWithShadow, true)
         pointerRadiusScale = a.getFloat(R.styleable.PointerSpeedometer_sv_pointerRadiusScale, 0.5f)
+        speedometerNotFilledColor = a.getColor(R.styleable.PointerSpeedometer_sv_speedometerNotFilledColor, -1)
 
         a.recycle()
         initAttributeValue()
@@ -184,12 +186,24 @@ open class PointerSpeedometer @JvmOverloads constructor(context: Context, attrs:
     }
 
     private fun updateSweep(): SweepGradient {
-        val startColor = Color.argb(150, Color.red(speedometerColor), Color.green(speedometerColor), Color.blue(speedometerColor))
-        val color2 = Color.argb(220, Color.red(speedometerColor), Color.green(speedometerColor), Color.blue(speedometerColor))
-        val color3 = Color.argb(70, Color.red(speedometerColor), Color.green(speedometerColor), Color.blue(speedometerColor))
-        val endColor = Color.argb(15, Color.red(speedometerColor), Color.green(speedometerColor), Color.blue(speedometerColor))
-        val position = getOffsetSpeed() * (getEndDegree() - getStartDegree()) / 360f
-        val sweepGradient = SweepGradient(size * .5f, size * .5f, intArrayOf(startColor, color2, speedometerColor, color3, endColor, startColor), floatArrayOf(0f, position * .5f, position, position, .99f, 1f))
+        val sweepGradient = if(speedometerNotFilledColor == -1) {
+            val startColor = Color.argb(150, Color.red(speedometerColor), Color.green(speedometerColor), Color.blue(speedometerColor))
+            val color2 = Color.argb(220, Color.red(speedometerColor), Color.green(speedometerColor), Color.blue(speedometerColor))
+            val color3 = Color.argb(70, Color.red(speedometerColor), Color.green(speedometerColor), Color.blue(speedometerColor))
+            val endColor = Color.argb(15, Color.red(speedometerColor), Color.green(speedometerColor), Color.blue(speedometerColor))
+            val position = getOffsetSpeed() * (getEndDegree() - getStartDegree()) / 360f
+            SweepGradient(size * .5f, size * .5f, intArrayOf(startColor, color2, speedometerColor, color3, endColor, startColor),
+                    floatArrayOf(0f, position * .5f, position, position, .99f, 1f))
+        } else {
+            val startColor = speedometerNotFilledColor
+            val color3 = speedometerNotFilledColor
+            val endColor = speedometerNotFilledColor
+            val position = getOffsetSpeed() * (getEndDegree() - getStartDegree()) / 360f
+            SweepGradient(size * .5f, size * .5f,
+                    intArrayOf(speedometerColor, speedometerColor, speedometerColor, color3, endColor, startColor),
+                    floatArrayOf(0f, position * .01f, position, position, .99f, 1f))
+        }
+
         val matrix = Matrix()
         matrix.postRotate(getStartDegree().toFloat(), size * .5f, size * .5f)
         sweepGradient.setLocalMatrix(matrix)
